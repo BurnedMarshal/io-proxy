@@ -1,0 +1,30 @@
+proxy:
+  address: "127.0.0.1:8080"
+  rules:
+    - match:
+        domain: "example.com"
+        base_path: "/api"
+        headers:
+          X-Forwarded-For: "127.0.0.1"
+      forward_to: "http://api.example.com"
+
+    - match:
+        domain: "example.org"
+        headers:
+          User-Agent: "Mozilla/5.0"
+      forward_to: "http://org.example.com"
+
+    - match:
+        base_path: "/static"
+      forward_to: "http://static.example.com"
+
+    - match:
+        domain: "anotherexample.com"
+        headers:
+          Authorization: "Bearer token123"
+      forward_to: "http://secured.example.com"
+
+    - match:
+        headers:
+          Custom-Header: "CustomValue"
+      forward_to: "http://custom.example.com"
