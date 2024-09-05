@@ -1,30 +1,39 @@
 proxy:
   address: "127.0.0.1:8080"
   rules:
-    - match:
-        domain: "example.com"
+    - match_criteria:
+        domain: "127.0.0.1:8080"
         base_path: "/api"
         headers:
           X-Forwarded-For: "127.0.0.1"
-      forward_to: "http://api.example.com"
+      forward_to: "http://www.example.com"
 
-    - match:
+    - match_criteria:
         domain: "example.org"
         headers:
           User-Agent: "Mozilla/5.0"
       forward_to: "http://org.example.com"
 
-    - match:
+    - match_criteria:
         base_path: "/static"
       forward_to: "http://static.example.com"
 
-    - match:
-        domain: "anotherexample.com"
-        headers:
-          Authorization: "Bearer token123"
+    - match_criteria:
+      domain: "anotherexample.com"
+      headers:
+        Authorization: "Bearer token123"
       forward_to: "http://secured.example.com"
 
-    - match:
+    - match_criteria:
         headers:
           Custom-Header: "CustomValue"
       forward_to: "http://custom.example.com"
+
+    - match_criteria:
+        base_path: "/webhp"
+      forward_to: "https://www.google.com"
+
+    - match_criteria:
+        domain: "127.0.0.1:8080"
+        base_path: "/info"
+      forward_to: "https://api-app.io.pagopa.it"

@@ -2,6 +2,7 @@ mod domain;
 mod ports;
 mod adapters;
 
+use tokio;
 use hyper::Server;
 use hyper::service::{make_service_fn, service_fn};
 use ports::config_port::EnvConfigPort;
@@ -10,9 +11,16 @@ use crate::adapters::config_adapter::FileConfigAdapter;
 use crate::adapters::env_config_adapter::EnvConfigAdapter;
 use crate::ports::config_port::ConfigPort;
 use crate::adapters::http_adapter::handle_request;
+use env_logger;
+use log::info;
 
 #[tokio::main]
 async fn main() {
+    env_logger::Builder::from_default_env()
+        .filter(None, log::LevelFilter::Info)  // Imposta il livello su info
+        .init();
+    info!("Starting proxy...");
+
     let config_adapter = FileConfigAdapter::new("Config.yaml".to_string());
     let env_config_adapter = EnvConfigAdapter::new();
     let mut config = config_adapter.load_config();
